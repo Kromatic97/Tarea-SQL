@@ -82,6 +82,18 @@ CREATE TABLE "courses" (
   "course_videos_id" uuid NOT NULL
 );
 
+CREATE TABLE "courses_users"(
+  "id" uuid PRIMARY KEY,
+  "id_users" uuid not null,
+  "id_curses" uuid not null,
+  "complete" integer NOT NULL
+);
+
+insert into "courses_users"(id, id_users, id_curses, complete)
+values('0f347519-c139-4ef5-9aaf-578af0847eb0','4c141fc7-8bb2-4342-90cb-2f5020a430cd','a521463b-2c0e-4c4c-90fa-0e3b48134dea',50),
+	('55720286-62ea-412b-9bbd-25326afe5341','edb0d10c-db9c-4bf6-8804-5c3f7f20939f','4c141fc7-8bb2-4342-90cb-2f5020a430cd',80);
+
+
 
 ALTER TABLE "courses" ADD FOREIGN KEY ("teacher_id") REFERENCES "teacher" ("id");
 ALTER TABLE "courses" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
@@ -102,3 +114,11 @@ select courses.title, courses.description, teacher."name", users."name", level."
 left join users on courses.user_id  = users.id
 left join level on courses.level_id  = level.id
 left join course_videos on courses.course_videos_id = course_videos.id ;
+
+
+
+select courses_users.complete, courses.title, courses.description, teacher."name", users."name", level."name", course_videos.url from courses left join teacher on courses.teacher_id  = teacher.id
+left join users on courses.user_id  = users.id
+left join level on courses.level_id  = level.id
+left join course_videos on courses.course_videos_id = course_videos.id 
+inner join courses_users on courses_users.id_users  = users.id ;
